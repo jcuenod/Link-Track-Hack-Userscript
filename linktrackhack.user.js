@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Google Link Hack
-// @namespace    https://github.com/jcuenod/Link-Track-Hack-Userscript
+// @namespace    https://github.com/jcuenod/userscripts/master/linktrackhack.user.js
 // @version      0.1
 // @description  Transform google links into untrackable links by holding the 'alt' key
 // @author       jcuenod
