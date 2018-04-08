@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         Improve vufind a bit with counts of books and built in renew buttons
+// @name         Vufind Improver
 // @namespace    http://tampermonkey.net/
 // @version      0.1
-// @description  try to take over the world!
+// @description  Improve vufind a bit with counts of books and built in renew buttons
 // @author       James Cuénod
 // @match        https://vufind.carli.illinois.edu/*/MyResearch/CheckedOut
 // @grant        none
