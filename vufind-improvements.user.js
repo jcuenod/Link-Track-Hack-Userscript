@@ -1,14 +1,52 @@
 // ==UserScript==
 // @name         Vufind Improver
 // @namespace    http://tampermonkey.net/
-// @version      0.2
+// @version      0.3
 // @description  Improve vufind a bit with counts of books and built in renew buttons
 // @author       James Cuénod
 // @match        https://vufind.carli.illinois.edu/*/MyResearch/CheckedOut
 // @grant        none
 // ==/UserScript==
+const url = window.location
 
-const url = "https://vufind.carli.illinois.edu/all/vf/MyResearch/CheckedOut";
+const cssRules = [`#bd ~ #bd {
+    display: grid;
+    grid-template-columns: auto 150px;
+}`, `#yui-main {
+    grid-column-start: 1;
+}`, `.yui-b {
+    grid-column-start: 2;
+    margin-right: 0 !important;
+    width: auto !important;
+}`, `#tabnav {
+    position: sticky;
+    top: 20px;
+}`, `.renew {
+    display:inline-block;
+    margin-left: 5px;
+    margin-top: -10px;
+    padding: 1px 3px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    outline: none;
+}`, `.renew:hover {
+    background-color: #ccc;
+}`, `.success .renew {
+    background-color: #8f8;
+}`, `.success .renew:hover {
+    background-color: #5a5;
+}`, `.failure .renew {
+    background-color: #e54;
+}`, `.failure .renew:hover {
+    background-color: #c54;
+}`, `.busy .renew {
+    border-radius: 50%;
+    -webkit-animation:spin 1s linear infinite;
+    -moz-animation:spin 1s linear infinite;
+    animation:spin 1s linear infinite;
+}`, `@-moz-keyframes spin { 100% { -moz-transform: rotate(-360deg); transform:rotate(-360deg); } }`,
+`@-webkit-keyframes spin { 100% { -webkit-transform: rotate(-360deg); transform:rotate(-360deg); } }`,
+`@keyframes spin { 100% { -webkit-transform: rotate(-360deg); transform:rotate(-360deg); } }`];
 
 const serialize = (obj, prefix) => {
   var str = [],
@@ -75,4 +113,10 @@ const clickHandler = (td) => {
         counterTd.appendChild(document.createTextNode(counter++));
         td.parentNode.insertBefore(counterTd, td.parentNode.firstChild);
     });
+
+    const sheet = window.document.styleSheets[0];
+    cssRules.forEach(rule => {
+        sheet.insertRule(rule, sheet.cssRules.length);
+    });
 })();
+
