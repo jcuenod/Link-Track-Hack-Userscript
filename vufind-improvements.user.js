@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name         Vufind Improver
 // @namespace    http://tampermonkey.net/
-// @version      0.3
+// @version      0.4
 // @description  Improve vufind a bit with counts of books and built in renew buttons
 // @author       James Cuénod
 // @match        https://vufind.carli.illinois.edu/*/MyResearch/CheckedOut
 // @grant        none
 // ==/UserScript==
-const url = window.location
+const url = window.location;
 
 const cssRules = [`#bd ~ #bd {
     display: grid;
@@ -80,13 +80,23 @@ const postData = (data) => {
   });
 };
 
-const parseResponse = (response) => response.text().then((text) => !text.match(".*fail.*"));
+const parseResponse = (response) => response.text().then((text) => text);
 
 const clickHandler = (td) => {
     const chkInput = td.querySelector("input");
     const key = chkInput.value;
     td.classList.add("busy");
-    postData({im_ubid: [key]}).then(resp => parseResponse(resp)).then(success => {
+    postData({im_ubid: [key]}).then(resp => parseResponse(resp)).then(text => {
+        const success = !text.match(".*fail.*");
+        if (success) {
+            parser=new DOMParser();
+            htmlDoc=parser.parseFromString(text, "text/html");
+            const renewTr = [...htmlDoc.querySelectorAll("tr")].filter(a => a.outerHTML.includes(key))[0];
+            const dateTd = td.parentNode.querySelector("td[sorttable_customkey]");
+            const newDateTd = renewTr.querySelector("td[sorttable_customkey]");
+            dateTd.setAttribute("sorttable_customkey", newDateTd.getAttribute("sorttable_customkey"));
+            dateTd.innerHTML = `<b>${newDateTd.innerHTML}</b>`;
+        }
         td.classList.add(success ? "success" : "failure");
         td.classList.remove("busy");
     }).catch(error => alert(error));
