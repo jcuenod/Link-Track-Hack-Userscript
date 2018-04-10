@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Vufind Improver
 // @namespace    http://tampermonkey.net/
-// @version      0.6
+// @version      0.7
 // @description  Improve vufind a bit with counts of books and built in renew buttons
 // @author       James Cuénod
 // @match        https://vufind.carli.illinois.edu/*/MyResearch/CheckedOut
@@ -21,6 +21,8 @@ const cssRules = [`#bd ~ #bd {
 }`, `#tabnav {
 	position: sticky;
 	top: 20px;
+}`, `.datagrid ~ div {
+    display: none;
 }`, `.renew {
 	display:inline-block;
 	margin-left: 5px;
