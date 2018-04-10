@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Vufind Improver
 // @namespace    http://tampermonkey.net/
-// @version      0.7
+// @version      0.8
 // @description  Improve vufind a bit with counts of books and built in renew buttons
 // @author       James Cuénod
 // @match        https://vufind.carli.illinois.edu/*/MyResearch/CheckedOut
@@ -86,7 +86,7 @@ const parseResponse = (response) => response.text().then((text) => text);
 
 const clickHandler = (event, td) => {
 	event.preventDefault();
-	const key = td.getAttribute("data-key");
+	const key = event.target.getAttribute("data-key");
 	td.classList.add("busy");
 	postData({im_ubid: [key]}).then(resp => parseResponse(resp)).then(text => {
 		const success = !text.match(".*fail.*");
