@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Vufind Improver
 // @namespace    http://tampermonkey.net/
-// @version      0.8
+// @version      0.9
 // @description  Improve vufind a bit with counts of books and built in renew buttons
 // @author       James Cuénod
 // @match        https://vufind.carli.illinois.edu/*/MyResearch/CheckedOut
@@ -146,8 +146,13 @@ const clickHandler = (event, td) => {
 	renewAllDiv.appendChild(renewAllButton);
 
 	const sheet = window.document.styleSheets[0];
-	cssRules.forEach(rule => {
-		sheet.insertRule(rule, sheet.cssRules.length);
+	cssRules.forEach(async (rule) => {
+		try {
+			await sheet.insertRule(rule, sheet.cssRules.length);
+		}
+		catch(e) {
+			console.log("vufind-improver failed to insert rule (if it's a prefix, don't worry):\n", rule)
+		}
 	});
 })();
 
