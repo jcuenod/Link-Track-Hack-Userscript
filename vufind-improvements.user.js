@@ -39,6 +39,7 @@ const cssRules = [`#bd ~ #bd {
 	background-color: #5a5;
 }`, `.failure .renew {
 	background-color: #e54;
+	color: #fdd;
 }`, `.failure .renew:hover {
 	background-color: #c54;
 }`, `.busy .renew {
